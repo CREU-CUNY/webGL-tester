@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
 	public Text numBooksCollected;
 	public Text wordDisplay;
 
+
 	private Rigidbody2D myRigidBody; // rigid body used for moving and jumping
 	private Animator myAnim; // animator to set values to cause animations
 
@@ -35,7 +36,8 @@ public class PlayerController : MonoBehaviour {
 	public float groundCheckRadius; // radius of ground check space
 	public LayerMask whatIsGround;
 
-	public bool isGrounded; // know if player is on ground
+	//Flo set to false
+	public bool isGrounded = false; // know if player is on ground
 	public bool isJumping; // know if player is jumping
 
 	public AudioSource jumpSound; //sound of player jumping
@@ -50,11 +52,25 @@ public class PlayerController : MonoBehaviour {
 	public List<string> bookNames = new List<string> ();
 
 
+	void Awake() {
+		myAnim = GetComponent<Animator> (); // animator for anim changes
+		myRigidBody = GetComponent<Rigidbody2D> ();
+		
+
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		health = FindObjectOfType<HealthBar> ();
-		myRigidBody = GetComponent<Rigidbody2D> (); // rigid body for physics
-		myAnim = GetComponent<Animator> (); // animator for anim changes
+		/*
+		Flo moved these lines to Awake()
+		//myRigidBody = GetComponent<Rigidbody2D> (); // rigid body for physics
+		//myAnim = GetComponent<Animator> (); // animator for anim changes
+		
+		*/
+
+		
 		//numBooksCollected.text = "Books: " + numBooks + "/" + maxBooks;
 		isPaused = false;
 	
@@ -62,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		Debug.log("in Update for PlayerController script");
 		isGrounded = Physics2D.OverlapCircle (groundCheck.position,groundCheckRadius,whatIsGround);
 
 		//HorizontaL input is either 0(no input), 1(going right), or -1(going left)
